@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para mi Pandita 💖</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
+    <div class="card">
+      <div id="mensaje" class="mensaje oculto"></div>
+      <img id="imagen" class="imagen oculto" src="" alt="Imagen de amor">
+    </div>
+  </div>
+
+  <script>
+    const frases = [
+      "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
+      "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
+      "Mi Pulguita curiosa 🐞, amo cómo ves el mundo, cómo preguntas, cómo te asombras. Me haces sentir feliz de estar a tu lado.",
+      "Recuerdo aquel paseo en Chinua 🫂, cuando no nos separábamos. Solo quería tomar tu mano e ir contigo a todas partes.",
+      "Te quiero con todo mi corazón 💖, y cada día me convenzo más de que contigo quiero tenerlo todo.",
+      "Eres lo más importante para mí, te amo, te quiero y te extraño muchisisisisimoooo mi niña 💌"
+    ];
+
+    const imagenes = [
+      "imagenes/image1.jpg",
+      "imagenes/image2.jpg",
+      "imagenes/image3.jpg",
+      "imagenes/image4.jpg",
+      "imagenes/image5.jpg",
+      "imagenes/image6.jpg"
+    ];
+
+    let i = 0;
+    let indexLetra = 0;
+    let intervaloTexto;
+
+    function iniciarDedicatoria() {
+      document.querySelector('.boton').style.display = 'none';
+      document.getElementById('mensaje').classList.remove('oculto');
+      document.getElementById('imagen').classList.remove('oculto');
+      mostrarFrase();
+    }
+
+    function mostrarFrase() {
+      const mensaje = document.getElementById("mensaje");
+      const imagen = document.getElementById("imagen");
+
+      mensaje.innerHTML = "";
+      imagen.style.opacity = 0;
+      mensaje.style.opacity = 0;
+      indexLetra = 0;
+
+      imagen.src = imagenes[i];
+
+      // Mostrar imagen lentamente
+      setTimeout(() => {
+        imagen.style.opacity = 1;
+      }, 300);
+
+      // Animación tipo máquina de escribir
+      intervaloTexto = setInterval(() => {
+        if (indexLetra < frases[i].length) {
+          let span = document.createElement('span');
+          span.textContent = frases[i].charAt(indexLetra);
+          span.className = 'letra';
+          mensaje.appendChild(span);
+          indexLetra++;
+          mensaje.style.opacity = 1;
+        } else {
+          clearInterval(intervaloTexto);
+          i = (i + 1) % frases.length;
+          setTimeout(mostrarFrase, 8000); // espera 8 segundos antes de la siguiente
+        }
+      }, 70); // velocidad de escritura
+    }
+  </script>
+</body>
+</html>
