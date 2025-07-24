@@ -6,8 +6,9 @@
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+  <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
+
   <div class="container">
-    <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
     <div class="card">
       <div id="mensaje" class="mensaje oculto"></div>
       <img id="imagen" class="imagen oculto" src="" alt="Imagen de amor">
@@ -39,6 +40,7 @@
 
     function iniciarDedicatoria() {
       document.querySelector('.boton').style.display = 'none';
+      document.querySelector('.container').style.display = 'block';
       document.getElementById('mensaje').classList.remove('oculto');
       document.getElementById('imagen').classList.remove('oculto');
       mostrarFrase();
@@ -52,29 +54,36 @@
       imagen.style.opacity = 0;
       mensaje.style.opacity = 0;
       indexLetra = 0;
-
       imagen.src = imagenes[i];
 
-      // Mostrar imagen lentamente
+      // Animación suave de imagen
       setTimeout(() => {
         imagen.style.opacity = 1;
       }, 300);
 
-      // Animación tipo máquina de escribir
+      // Máquina de escribir con detección de emojis
       intervaloTexto = setInterval(() => {
         if (indexLetra < frases[i].length) {
+          let char = frases[i].charAt(indexLetra);
           let span = document.createElement('span');
-          span.textContent = frases[i].charAt(indexLetra);
-          span.className = 'letra';
+
+          // Si el caracter es emoji (código Unicode mayor a 10000), lo animamos
+          if (char.codePointAt(0) > 10000) {
+            span.className = 'emoji';
+          } else {
+            span.className = 'letra';
+          }
+
+          span.textContent = char;
           mensaje.appendChild(span);
-          indexLetra++;
           mensaje.style.opacity = 1;
+          indexLetra++;
         } else {
           clearInterval(intervaloTexto);
           i = (i + 1) % frases.length;
-          setTimeout(mostrarFrase, 8000); // espera 8 segundos antes de la siguiente
+          setTimeout(mostrarFrase, 8000);
         }
-      }, 70); // velocidad de escritura
+      }, 70);
     }
   </script>
 </body>
