@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Para mi Pandita 💖</title>
-  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="estilos.css" />
+  <link rel="stylesheet" href="burbujas.css" />
 </head>
 <body>
   <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
 
-  <div class="container">
+  <div class="container oculto">
     <div class="card">
-      <div id="mensaje" class="mensaje oculto"></div>
-      <img id="imagen" class="imagen oculto" src="" alt="Imagen de amor">
+      <div id="mensaje" class="mensaje"></div>
+      <img id="imagen" class="imagen" src="" alt="Imagen de amor" />
     </div>
   </div>
 
+  <!-- Contenedor de burbujas -->
+  <div class="bubbles"></div>
+
   <script>
+    // Código para máquina de escribir y cambio de imagen
     const frases = [
       "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
       "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
@@ -40,9 +45,7 @@
 
     function iniciarDedicatoria() {
       document.querySelector('.boton').style.display = 'none';
-      document.querySelector('.container').style.display = 'block';
-      document.getElementById('mensaje').classList.remove('oculto');
-      document.getElementById('imagen').classList.remove('oculto');
+      document.querySelector('.container').classList.remove('oculto');
       mostrarFrase();
     }
 
@@ -50,41 +53,64 @@
       const mensaje = document.getElementById("mensaje");
       const imagen = document.getElementById("imagen");
 
-      mensaje.innerHTML = "";
       imagen.style.opacity = 0;
-      mensaje.style.opacity = 0;
+      mensaje.textContent = "";
       indexLetra = 0;
-      imagen.src = imagenes[i];
 
-      // Animación suave de imagen
       setTimeout(() => {
+        imagen.src = imagenes[i];
         imagen.style.opacity = 1;
-      }, 300);
+      }, 500);
 
-      // Máquina de escribir con detección de emojis
+      clearInterval(intervaloTexto);
       intervaloTexto = setInterval(() => {
         if (indexLetra < frases[i].length) {
-          let char = frases[i].charAt(indexLetra);
-          let span = document.createElement('span');
-
-          // Si el caracter es emoji (código Unicode mayor a 10000), lo animamos
-          if (char.codePointAt(0) > 10000) {
-            span.className = 'emoji';
-          } else {
-            span.className = 'letra';
-          }
-
-          span.textContent = char;
-          mensaje.appendChild(span);
-          mensaje.style.opacity = 1;
+          const char = frases[i].charAt(indexLetra);
+          mensaje.textContent += char;
           indexLetra++;
         } else {
           clearInterval(intervaloTexto);
-          i = (i + 1) % frases.length;
-          setTimeout(mostrarFrase, 8000);
+          setTimeout(() => {
+            i = (i + 1) % frases.length;
+            mostrarFrase();
+          }, 5000);
         }
-      }, 70);
+      }, 50);
     }
+
+    // Código para generar burbujas
+const bubblesContainer = document.querySelector('.bubbles');
+
+for (let i = 0; i < 30; i++) {
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+
+  const size = Math.random() * 50 + 20;
+  bubble.style.width = size + 'px';
+  bubble.style.height = size + 'px';
+
+  bubble.style.left = Math.random() * 100 + 'vw';
+
+  // Elegir si sube o baja
+  if (Math.random() < 0.5) {
+    // Animación que cae
+    bubble.style.top = Math.random() * 100 + 'vh';
+    bubble.style.animationName = 'fallDown';
+  } else {
+    // Animación que sube
+    bubble.style.top = Math.random() * 100 + 'vh';
+    bubble.style.animationName = 'riseUp';
+  }
+
+  const duracion = Math.random() * 15 + 15;
+  bubble.style.animationDuration = duracion + 's';
+
+  // Delay negativo para que la animación empiece ya en progreso
+  const delay = Math.random() * duracion;
+  bubble.style.animationDelay = `-${delay}s`;
+
+  bubblesContainer.appendChild(bubble);
+}
   </script>
 </body>
 </html>
