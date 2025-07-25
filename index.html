@@ -20,97 +20,87 @@
   <div class="bubbles"></div>
 
   <script>
-    // Código para máquina de escribir y cambio de imagen
-    const frases = [
-      "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
-      "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
-      "Mi Pulguita curiosa 🐞, amo cómo ves el mundo, cómo preguntas, cómo te asombras. Me haces sentir feliz de estar a tu lado.",
-      "Recuerdo aquel paseo en Chinua 🫂, cuando no nos separábamos. Solo quería tomar tu mano e ir contigo a todas partes.",
-      "Te quiero con todo mi corazón 💖, y cada día me convenzo más de que contigo quiero tenerlo todo.",
-      "Eres lo más importante para mí, te amo, te quiero y te extraño muchisisisisimoooo mi niña 💌"
-    ];
+  const frases = [
+    "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
+    "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
+    "Mi Pulguita curiosa 🐞, amo cómo ves el mundo, cómo preguntas, cómo te asombras. Me haces sentir feliz de estar a tu lado.",
+    "Recuerdo aquel paseo en Chinua 🫂, cuando no nos separábamos. Solo quería tomar tu mano e ir contigo a todas partes.",
+    "Te quiero con todo mi corazón 💖, y cada día me convenzo más de que contigo quiero tenerlo todo.",
+    "Eres lo más importante para mí, te amo, te quiero y te extraño muchisisisisimoooo mi niña 💌"
+  ];
 
-    const imagenes = [
-      "imagenes/image1.jpg",
-      "imagenes/image2.jpg",
-      "imagenes/image3.jpg",
-      "imagenes/image4.jpg",
-      "imagenes/image5.jpg",
-      "imagenes/image6.jpg"
-    ];
+  const imagenes = [
+    "imagenes/image1.jpg",
+    "imagenes/image2.jpg",
+    "imagenes/image3.jpg",
+    "imagenes/image4.jpg",
+    "imagenes/image5.jpg",
+    "imagenes/image6.jpg"
+  ];
 
-    let i = 0;
-    let indexLetra = 0;
-    let intervaloTexto;
+  let i = 0;
+  let indexLetra = 0;
+  let intervaloTexto;
 
-    function iniciarDedicatoria() {
-      document.querySelector('.boton').style.display = 'none';
-      document.querySelector('.container').classList.remove('oculto');
-      mostrarFrase();
-    }
+  function iniciarDedicatoria() {
+    document.querySelector('.boton').style.display = 'none';
+    document.querySelector('.container').classList.remove('oculto');
+    mostrarFrase();
+  }
 
-    function mostrarFrase() {
-      const mensaje = document.getElementById("mensaje");
-      const imagen = document.getElementById("imagen");
+  function mostrarFrase() {
+    const mensaje = document.getElementById("mensaje");
+    const imagen = document.getElementById("imagen");
 
-      imagen.style.opacity = 0;
-      mensaje.textContent = "";
-      indexLetra = 0;
+    // Oculta con transición
+    mensaje.style.opacity = 0;
+    imagen.style.opacity = 0;
 
-      setTimeout(() => {
-        imagen.src = imagenes[i];
-        imagen.style.opacity = 1;
-      }, 500);
+    mensaje.textContent = "";
+    indexLetra = 0;
+
+    // Cambiar imagen y frase con retraso de 500ms
+    setTimeout(() => {
+      imagen.src = imagenes[i];
+      imagen.style.opacity = 1;
 
       clearInterval(intervaloTexto);
       intervaloTexto = setInterval(() => {
         if (indexLetra < frases[i].length) {
-          const char = frases[i].charAt(indexLetra);
-          mensaje.textContent += char;
+          mensaje.textContent += frases[i].charAt(indexLetra);
           indexLetra++;
         } else {
           clearInterval(intervaloTexto);
+          mensaje.style.opacity = 1; // Mostrar texto cuando termina
           setTimeout(() => {
             i = (i + 1) % frases.length;
             mostrarFrase();
           }, 5000);
         }
       }, 50);
-    }
-
-    // Código para generar burbujas
-const bubblesContainer = document.querySelector('.bubbles');
-
-for (let i = 0; i < 30; i++) {
-  const bubble = document.createElement('div');
-  bubble.classList.add('bubble');
-
-  const size = Math.random() * 50 + 20;
-  bubble.style.width = size + 'px';
-  bubble.style.height = size + 'px';
-
-  bubble.style.left = Math.random() * 100 + 'vw';
-
-  // Elegir si sube o baja
-  if (Math.random() < 0.5) {
-    // Animación que cae
-    bubble.style.top = Math.random() * 100 + 'vh';
-    bubble.style.animationName = 'fallDown';
-  } else {
-    // Animación que sube
-    bubble.style.top = Math.random() * 100 + 'vh';
-    bubble.style.animationName = 'riseUp';
+    }, 500);
   }
 
-  const duracion = Math.random() * 15 + 15;
-  bubble.style.animationDuration = duracion + 's';
+  // Burbuja romántica animada 🎈
+  const bubblesContainer = document.querySelector('.bubbles');
 
-  // Delay negativo para que la animación empiece ya en progreso
-  const delay = Math.random() * duracion;
-  bubble.style.animationDelay = `-${delay}s`;
+  for (let i = 0; i < 30; i++) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
 
-  bubblesContainer.appendChild(bubble);
-}
+    const size = Math.random() * 50 + 20;
+    bubble.style.width = size + 'px';
+    bubble.style.height = size + 'px';
+    bubble.style.left = Math.random() * 100 + 'vw';
+    bubble.style.top = Math.random() * 100 + 'vh';
+
+    bubble.style.animationName = Math.random() < 0.5 ? 'fallDown' : 'riseUp';
+    const duracion = Math.random() * 15 + 15;
+    bubble.style.animationDuration = duracion + 's';
+    bubble.style.animationDelay = `-${Math.random() * duracion}s`;
+
+    bubblesContainer.appendChild(bubble);
+  }
   </script>
 </body>
 </html>
