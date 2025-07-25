@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>¿Cuánto sabes de mí, amorcito? 💭</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #d63384;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .opciones button {
+      display: block;
+      margin: 10px auto;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #ffb3c1;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+    .opciones button:hover {
+      transform: scale(1.05);
+      background-color: #ff5c8a;
+    }
+    .mensaje {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    canvas.confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>¿Cuál era mi comida favorita? 🍽️</h1>
+  <div class="opciones">
+    <button onclick="verificarRespuesta('a')">a) Empanizado</button>
+    <button onclick="verificarRespuesta('b')">b) Alitas</button>
+    <button onclick="verificarRespuesta('c')">c) Pizza</button>
+  </div>
+  <div class="mensaje" id="mensajeResultado"></div>
+
+  <canvas id="confettiCanvas" class="confetti"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    function verificarRespuesta(respuesta) {
+      const mensaje = document.getElementById("mensajeResultado");
+      if (respuesta === 'b') {
+        mensaje.innerHTML = "🎉 ¡Felicidades, acertaste amor! Alitas era la correcta 😍";
+        lanzarConfetti();
+      } else {
+        mensaje.innerHTML = "😢 Ups, fallaste. Pero igual te amo mucho mi amor 💘";
+      }
+    }
+
+    function lanzarConfetti() {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 }
+        }));
+      }, 250);
+    }
+  </script>
+</body>
+</html>

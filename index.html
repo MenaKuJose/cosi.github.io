@@ -5,12 +5,67 @@
   <title>Para mi Pandita 💖</title>
   <link rel="stylesheet" href="estilos.css" />
   <link rel="stylesheet" href="burbujas.css" />
+  <link rel="stylesheet" href="saludoFinal.css" />
+  <style>
+    /* Estilos para el contenedor final */
+    .final-container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 1rem;
+      background: #c26da7;
+      color: white;
+      font-family: 'Segoe UI Emoji', 'Poppins', sans-serif;
+    }
+    .final-container.active {
+      display: flex;
+    }
+    .final-container p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    .final-container button {
+      background: linear-gradient(to right, #ff80b0, #ff6f91);
+      border: none;
+      border-radius: 50px;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: bold;
+      margin: 0 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(255, 115, 170, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .final-container button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(255, 115, 170, 0.6);
+      outline: none;
+    }
+    .final-container .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+  </style>
 </head>
 <body>
-  <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
+  <!-- Contenedor de los botones de inicio -->
+  <div id="botonesInicio" style="text-align: center; margin-top: 40px;">
+    <!-- Primer botón -->
+    <button onclick="iniciarDedicatoria()" class="boton">Presióname, dale daleee amorcito 💌</button>
+    <!-- Segundo botón -->
+    <button onclick="window.location.href='adivinar.html'" class="boton boton-adivinar">Intenta adivinar 🧠</button>
+  </div>
 
+  <!-- Contenedor de frases e imágenes -->
   <div class="container oculto">
-    <div class="card">
+    <div>
       <div id="mensaje" class="mensaje"></div>
       <img id="imagen" class="imagen" src="" alt="Imagen de amor" />
     </div>
@@ -19,88 +74,135 @@
   <!-- Contenedor de burbujas -->
   <div class="bubbles"></div>
 
+  <!-- Contenedor final con pregunta -->
+  <div class="final-container" id="finalContainer"></div>
+
   <script>
-  const frases = [
-    "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
-    "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
-    "Mi Pulguita curiosa 🐞, amo cómo ves el mundo, cómo preguntas, cómo te asombras. Me haces sentir feliz de estar a tu lado.",
-    "Recuerdo aquel paseo en Chinua 🫂, cuando no nos separábamos. Solo quería tomar tu mano e ir contigo a todas partes.",
-    "Te quiero con todo mi corazón 💖, y cada día me convenzo más de que contigo quiero tenerlo todo.",
-    "Eres lo más importante para mí, te amo, te quiero y te extraño muchisisisisimoooo mi niña 💌"
-  ];
+    const frases = [
+      "Hola mi Pandita 🐼, desde que llegaste a mi vida, todo tiene más color. No hay momento contigo que no me haga sonreír.",
+      "Mi Amor 💕, contigo aprendí a compartir el corazón. Gracias por cada abrazo, cada palabra y cada risa.",
+      "Mi Pulguita curiosa 🐞, amo cómo ves el mundo, cómo preguntas, cómo te asombras. Me haces sentir feliz de estar a tu lado.",
+      "Recuerdo aquel paseo en Chinua 🫂, cuando no nos separábamos. Solo quería tomar tu mano e ir contigo a todas partes.",
+      "Te quiero con todo mi corazón 💖, y cada día me convenzo más de que contigo quiero tenerlo todo.",
+      "Eres lo más importante para mí, te amo, te quiero y te extraño muchisisisisimoooo mi niña 💌"
+    ];
 
-  const imagenes = [
-    "imagenes/image1.jpg",
-    "imagenes/image2.jpg",
-    "imagenes/image3.jpg",
-    "imagenes/image4.jpg",
-    "imagenes/image5.jpg",
-    "imagenes/image6.jpg"
-  ];
+    const imagenes = [
+      "imagenes/image1.jpg",
+      "imagenes/image2.jpg",
+      "imagenes/image3.jpg",
+      "imagenes/image4.jpg",
+      "imagenes/image5.jpg",
+      "imagenes/image6.jpg"
+    ];
 
-  let i = 0;
-  let indexLetra = 0;
-  let intervaloTexto;
+    let i = 0;
+    let indexLetra = 0;
+    let intervaloTexto;
 
-  function iniciarDedicatoria() {
-    document.querySelector('.boton').style.display = 'none';
-    document.querySelector('.container').classList.remove('oculto');
-    mostrarFrase();
-  }
-
-  function mostrarFrase() {
+    const container = document.querySelector('.container');
     const mensaje = document.getElementById("mensaje");
     const imagen = document.getElementById("imagen");
+    const finalContainer = document.getElementById("finalContainer");
+    const botonesInicio = document.getElementById("botonesInicio");
 
-    // Oculta con transición
-    mensaje.style.opacity = 0;
-    imagen.style.opacity = 0;
+    function iniciarDedicatoria() {
+      botonesInicio.style.display = 'none'; // Oculta ambos botones
+      finalContainer.classList.remove('active');
+      finalContainer.innerHTML = '';
+      container.classList.remove('oculto');
+      i = 0;
+      mostrarFrase();
+    }
 
-    mensaje.textContent = "";
-    indexLetra = 0;
+    function mostrarFrase() {
+      if (i >= frases.length) {
+        container.classList.add('oculto');
+        mostrarPantallaFinal();
+        return;
+      }
 
-    // Cambiar imagen y frase con retraso de 500ms
-    setTimeout(() => {
-      imagen.src = imagenes[i];
-      imagen.style.opacity = 1;
+      mensaje.style.opacity = 0;
+      imagen.style.opacity = 0;
+      mensaje.textContent = "";
+      indexLetra = 0;
 
-      clearInterval(intervaloTexto);
-      intervaloTexto = setInterval(() => {
-        if (indexLetra < frases[i].length) {
-          mensaje.textContent += frases[i].charAt(indexLetra);
-          indexLetra++;
-        } else {
-          clearInterval(intervaloTexto);
-          mensaje.style.opacity = 1; // Mostrar texto cuando termina
-          setTimeout(() => {
-            i = (i + 1) % frases.length;
-            mostrarFrase();
-          }, 5000);
-        }
-      }, 50);
-    }, 500);
-  }
+      setTimeout(() => {
+        imagen.src = imagenes[i];
+        imagen.style.opacity = 1;
 
-  // Burbuja romántica animada 🎈
-  const bubblesContainer = document.querySelector('.bubbles');
+        clearInterval(intervaloTexto);
+        intervaloTexto = setInterval(() => {
+          if (indexLetra < frases[i].length) {
+            mensaje.textContent += frases[i].charAt(indexLetra);
+            indexLetra++;
+          } else {
+            clearInterval(intervaloTexto);
+            mensaje.style.opacity = 1;
+            setTimeout(() => {
+              i++;
+              mostrarFrase();
+            }, 5000);
+          }
+        }, 50);
+      }, 500);
+    }
 
-  for (let i = 0; i < 30; i++) {
-    const bubble = document.createElement('div');
-    bubble.classList.add('bubble');
+    function mostrarPantallaFinal() {
+      finalContainer.innerHTML = `
+        <div class="final-message">
+          <span class="mano" role="img" aria-label="mano saludando">👋</span>
+          <span>¿Quieres volver a recordar estos recuerdos?</span>
+          <span class="corazon" role="img" aria-label="corazón">💖</span>
+        </div>
+        <div class="btn-group">
+          <button id="btnSi">Sí</button>
+          <button id="btnNo">No</button>
+        </div>
+      `;
+      finalContainer.classList.add('active');
 
-    const size = Math.random() * 50 + 20;
-    bubble.style.width = size + 'px';
-    bubble.style.height = size + 'px';
-    bubble.style.left = Math.random() * 100 + 'vw';
-    bubble.style.top = Math.random() * 100 + 'vh';
+      document.getElementById('btnSi').onclick = () => {
+        finalContainer.classList.remove('active');
+        container.classList.remove('oculto');
+        i = 0;
+        mostrarFrase();
+      };
 
-    bubble.style.animationName = Math.random() < 0.5 ? 'fallDown' : 'riseUp';
-    const duracion = Math.random() * 15 + 15;
-    bubble.style.animationDuration = duracion + 's';
-    bubble.style.animationDelay = `-${Math.random() * duracion}s`;
+      document.getElementById('btnNo').onclick = () => {
+        finalContainer.innerHTML = `
+          <div class="final-message">
+            <span class="mano" role="img" aria-label="mano saludando">👋</span>
+            <span>Gracias por recordar estos bellos momentos, ¿hagamos más si?</span>
+            <span class="beso" role="img" aria-label="beso">💋</span>
+          </div>
+        `;
+        setTimeout(() => {
+          finalContainer.classList.remove('active');
+          botonesInicio.style.display = 'block'; // Vuelve a mostrar los botones
+        }, 5000);
+      };
+    }
 
-    bubblesContainer.appendChild(bubble);
-  }
+    // Burbujas decorativas
+    const bubblesContainer = document.querySelector('.bubbles');
+    for (let i = 0; i < 30; i++) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+
+      const size = Math.random() * 50 + 20;
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * 100 + 'vw';
+      bubble.style.top = Math.random() * 100 + 'vh';
+
+      bubble.style.animationName = Math.random() < 0.5 ? 'fallDown' : 'riseUp';
+      const duracion = Math.random() * 15 + 15;
+      bubble.style.animationDuration = duracion + 's';
+      bubble.style.animationDelay = `-${Math.random() * duracion}s`;
+
+      bubblesContainer.appendChild(bubble);
+    }
   </script>
 </body>
 </html>

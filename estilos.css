@@ -14,9 +14,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center; /* Centrado vertical para móvil */
   align-items: center;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* Botón inicial */
@@ -32,17 +33,58 @@ body {
   box-shadow: 0 6px 18px rgba(255, 115, 170, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-  margin: 20px auto 30px auto;
+  margin: 0 auto;
   user-select: none;
+  display: block;
+  /* Hover y focus para efecto */
+}
+.boton:hover,
+.boton:focus {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 115, 170, 0.6);
+  outline: none;
+}
+/* segundo boton*/
+.boton {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  margin: 10px auto;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   display: block;
 }
 
-/* Centrado de botón */
-.button-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.boton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
+
+.boton-adivinar {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 15px 30px;
+  margin: 10px auto;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: block;
+}
+
+.boton-adivinar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
 
 /* Flecha arriba del botón */
 .boton::before {
@@ -60,78 +102,45 @@ body {
   50% { transform: translateX(-50%) translateY(-8px); }
 }
 
+/* Contenedor del botón centrado verticalmente en móvil */
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* Para centrar verticalmente */
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
 /* Container principal */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 500px;
+  /* max-width: 500px; quitado para imagen más grande */
   flex: 1;
   padding: 0.5rem;
   justify-content: center;
 }
 
-/* Tarjeta visual */
-.card {
-  background: linear-gradient(135deg, #c26da7, #c26da7);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow:
-    0 0 12px 4px rgba(236, 7, 125, 0.6),
-    0 0 25px 6px rgba(194, 109, 167, 0.4),
-    0 8px 25px rgba(0,0,0,0.1);
-  border: 2px solid #ffb6c1;
-  width: 100%;
-  max-width: 480px;
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  transition: box-shadow 0.5s ease;
-}
+/* Quitamos .card para no interferir en diseño */
+/* .card {
+  Removed as requested
+} */
 
-.card:hover {
-  box-shadow:
-    0 0 22px 8px rgba(236, 7, 125, 0.9),
-    0 0 35px 15px rgba(194, 109, 167, 0.7),
-    0 10px 35px rgba(0,0,0,0.15);
-}
-
-/* Mensaje con transición de entrada y animación de color */
+/* Mensaje con transición de entrada y animación de color (sin loop infinito) */
 .mensaje {
   font-size: 1.4rem;
   line-height: 1.5;
   margin-bottom: 20px;
   opacity: 0;
-  animation: fadeIn 2s ease-in-out forwards, cambioColorTexto 12s ease-in-out infinite alternate;
-  animation-delay: 0.3s;
+  animation: fadeIn 1s ease-in-out forwards;
+  /* Quitar animación cambioColorTexto infinita para que frase esté sincronizada por JS */
   text-shadow: 1px 1px 3px rgba(236, 7, 125, 0.8), 0 0 8px rgba(236, 7, 125, 0.6);
-}
-
-/* Animación de color de texto con tonos negro, rosado y blanco */
-@keyframes cambioColorTexto {
-  0% {
-    color: #000000;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 192, 203, 0.3);
-  }
-  25% {
-    color: #ffc0cb;
-    text-shadow: 1px 1px 3px rgba(255, 192, 203, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8), 0 0 12px rgba(255, 182, 193, 0.6);
-  }
-  75% {
-    color: #ff69b4;
-    text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.8), 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  100% {
-    color: #000000;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 192, 203, 0.3);
-  }
 }
 
 /* Fade-in general */
@@ -140,10 +149,10 @@ body {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Imagenes con transiciones suaves y tamaño móvil */
+/* Imagen más grande, sin max-width pequeño */
 .imagen {
   width: 100%;
-  max-width: 400px;
+  max-width: none;  /* quitar límite */
   height: auto;
   border-radius: 16px;
   border: 4px solid #fff;
@@ -164,8 +173,36 @@ body {
   display: none !important;
 }
 
+/* Botón final */
+.boton-final {
+  background: linear-gradient(to right, #ff80b0, #ff6f91);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.3rem;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255, 115, 170, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 20px auto;
+  user-select: none;
+  display: block;
+  width: fit-content;
+}
+.boton-final:hover,
+.boton-final:focus {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 115, 170, 0.6);
+  outline: none;
+}
+
 /* RESPONSIVE ajustes para móvil */
 @media (max-width: 480px) {
+  body {
+    justify-content: center; /* Centrado vertical en móvil */
+  }
+
   .boton {
     font-size: 1.2rem;
     padding: 16px 36px;
@@ -175,12 +212,7 @@ body {
     font-size: 1.3rem;
   }
 
-  .card {
-    padding: 20px;
-    min-height: 75vh;
-  }
-
   .imagen {
-    max-width: 90%;
+    max-width: 100%; /* imagen más grande */
   }
 }
